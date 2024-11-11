@@ -1,0 +1,46 @@
+USE classroom;
+CREATE TABLE course(
+    code VARCHAR(10) NOT NULL,
+    course_name VARCHAR(50) NOT NULL,
+    year INT NOT NULL,
+    sem INT NOT NULL,
+    course_unit VARCHAR(15) NOT NULL,
+    program VARCHAR(40),
+    PRIMARY KEY(code)
+);
+
+INSERT INTO course(code, course_name, year, sem, program)
+VALUES("B27013", "data_science", 2024, 2 , "datastructures"),
+  ("B37044", "computer science", 2022, 1, "discrete mathematics"),
+  ("A54033", "Nursing", 2023, 2, "Anatomy"),
+  ("C01701", "Law", 2024, 2, "ict");
+
+SELECT *FROM course;
+
+CREATE VIEW studentC 
+AS 
+SELECT course_name, year, sem, program
+FROM course 
+WHERE course_name = "data_science" OR "computer science";
+
+SELECT *FROM studentc
+
+CREATE VIEW HOD 
+AS 
+SELECT course_name, year, sem, program
+FROM course WHERE course_name IN ("data_science" and "computer science");
+
+SELECT *FROM HOD
+
+CREATE VIEW HR AS SELECT *FROM course;
+SELECT *FROM HR;
+
+INSERT INTO HR VALUES("B24036","civil engineering", 2024, 1, "tutorial", "tech" )
+
+SELECT *FROM HR;
+UPDATE HR SET course_unit = "main" WHERE course_name = "civil engineering"
+
+
+
+
+
