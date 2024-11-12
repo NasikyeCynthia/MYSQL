@@ -1,0 +1,95 @@
+-- Active: 1728116029034@@127.0.0.1@3306@library_management
+SHOW DATABASES;
+USE library_management;
+CREATE TABLE member_s(
+    member_ID INT (70),
+    member_names VARCHAR(45) NOT NULL,
+    phonenumber INT,
+    borrowed_date DATE,
+    PRIMARY KEY(member_ID)
+);
+INSERT INTO member_s (member_ID, member_names, phonenumber, borrowed_date)
+VALUES (53, 'John Doe', 1234567890,'2013-10-6' );
+
+INSERT INTO member_s(member_ID, member_names, phonenumber, borrowed_date)
+VALUES (75, 'Tracy Prissy', 1287642890, '2013-8-30');
+
+INSERT INTO member_s(member_ID, member_names, phonenumber, borrowed_date)
+VALUES (50, 'Mark Darwin', 1234721335, '2013-7-24');
+
+SELECT * FROM member_s;
+
+CREATE TABLE Author(
+    Author_ID VARCHAR(4),
+    AuthorName VARCHAR(45),
+    book VARCHAR(45),
+    genre VARCHAR(45),
+    PRIMARY KEY(Author_ID)
+);
+INSERT INTO Author(Author_ID,AuthorName, book, genre)
+VALUES ('AD1', 'Estella Wald', 'Great Expectations', 'Fantasy');
+
+SELECT * FROM Author;
+CREATE TABLE books(
+    serialNumber VARCHAR(45) PRIMARY KEY,
+    title VARCHAR(45) NOT NULL,
+    author VARCHAR(45) NOT NULL,
+    copiesOwned INT,
+    FOREIGN KEY (Author_ID) REFERENCES Author(Author_ID)
+);
+DESCRIBE books;
+
+INSERT INTO books(serialNumber, title, author, copiesOwned)
+VALUES (021, 'The Great Gatsby', 'F. Scott Fitzergerald',5);
+
+INSERT INTO books (serialNumber, title, author, copiesOwned)
+VALUES (576, 'Things Fall Apart', 'Chinua Achebe',18);
+
+INSERT INTO books (serialNumber, title, author, copiesOwned)
+VALUES (835, 'Great Expectations', 'Estella Wald',45);
+
+SELECT * FROM books;
+
+
+CREATE TABLE borrow_loan(
+    idborrow_loan INT PRIMARY KEY AUTO_INCREMENT,
+    loan_date DATE,
+    return_date DATE,
+    FOREIGN KEY (serialNumber) REFERENCES books(serialNumber),
+    FOREIGN KEY (member_ID) REFERENCES member_s(member_ID)
+);
+INSERT INTO borrow_loan(loan_date, return_date)
+VALUES ('2013-10-6', '2013-7-24');
+
+INSERT INTO borrow_loan(loan_date, return_date)
+VALUES ('2013-8-15', '2013-8-24');
+
+SELECT * FROM borrow_loan;
+
+CREATE TABLE fine(
+    fine_ID INT PRIMARY KEY AUTO_INCREMENT,
+    fine_Date DATE,
+    fine_Amount INT,
+    fine_reason VARCHAR(50),
+    FOREIGN KEY (idborrow_loan) REFERENCES borrow_loan(idborrow_loan),
+    FOREIGN KEY (serialNumber) REFERENCES book_s(serialNumber),
+    FOREIGN KEY (member_ID) REFERENCES member_s(member_ID)
+);
+
+INSERT INTO fine(fine_Date, fine_Amount,fine_reason)
+VALUES ('2013-7-17', 4500,'damage');
+
+INSERT INTO fine(fine_Date, fine_Amount,fine_reason)
+VALUES ('2013-6-30', 7000,'damage');
+
+SELECT * FROM fine;
+
+CREATE TABLE fine_payment(
+    fine_Payment_Id INT PRIMARY KEY AUTO_INCREMENT,
+    fine_Payment_date DATE,
+    fine_Payment_Amount INT,
+    FOREIGN KEY (member_ID) REFERENCES member_s(member_ID)
+);
+INSERT INTO fine_payment(fine_Payment_date, fine_Payment_Amount)
+VALUES ('2013-7-25', 4500);
+SELECT * FROM fine_payment;
