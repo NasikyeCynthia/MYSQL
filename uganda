@@ -1,0 +1,82 @@
+CREATE DATABASE Uganda;
+SHOW DATABASES;
+USE Uganda;
+
+CREATE TABLE district(
+    DistrictCode VARCHAR(10),
+    Dname VARCHAR(15) UNIQUE,
+    Region VARCHAR(15),
+    PRIMARY KEY(DistrictCode)
+);
+CREATE TABLE citizen(
+    NIN INT) NOT NULL CHECK (LENGTH(NIN) >= 11)
+    Fname VARCHAR(3) NOT NULL,
+    Lname VARCHAR(15) NOT NULL,
+    Gender VARCHAR(10)  CHECK (gender IN ('Male', 'Female')),
+    DistrictCode VARCHAR(10),
+    PRIMARY KEY (NIN),
+    FOREIGN KEY(DistrictCode) REFERENCES district(DistrictCode)
+);
+
+ALTER TABLE citizen
+MODIFY COLUMN Fname VARCHAR(15);
+
+ALTER TABLE citizen
+MODIFY COLUMN  NIN INT NOT NULL CHECK (LENGTH(NIN) = 11);
+
+
+ALTER TABLE district
+ADD COLUMN Dpopulation INT;
+
+INSERT INTO citizen(NIN,Fname,Lname,Gender,DistrictCode)
+VALUES(12345678902, "Cynthia", "Nasikye", "Female", "A0123"),
+(24563976543, "Joseph", "Nandaah", "Male", "B2309"),
+(32458576416, "Leon", "Baino", "Male", "A2674"),
+(89676507342, "Nelly", "Aturinda", "Female", "d7635");
+
+INSERT INTO district(DistrictCode, Dname, Region, Dpopulation)
+VALUES("A0123", "Mukono", "Central", 2008746),
+("B2309", "Mbale", "Eastern", 45000),
+("A2674", "Mabarara", "Western", 674599),
+("d7635", "Arua", "Northern", 97464);
+
+CREATE VIEW view1
+AS
+SELECT COUNT(DISTINCT Dname) AS total_districts
+FROM district;
+SELECT *FROM view1
+
+CREATE VIEW view2 
+AS 
+SELECT Fname, Lname
+FROM citizen;
+
+SELECT *FROM view2
+
+CREATE VIEW view3
+AS
+SELECT *FROM citizen
+WHERE DistrictCode = "d7635";
+SELECT *FROM view3
+
+CREATE VIEW view4
+AS
+SELECT Dname, 
+FROM district
+WHERE Dname LIKE 'A%';
+SELECT *FROM view4;
+
+CREATE VIEW view5 AS
+SELECT SUM(population) AS totalpopulation
+FROM district;
+SELECT *FROM view5
+
+CREATE VIEW view6
+AS
+SELECT Dname, population
+FROM district
+ORDER BY population DESC
+LIMIT 1;
+SELECT *FROM view6;
+
+
